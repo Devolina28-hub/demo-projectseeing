@@ -52,8 +52,14 @@ function encryptImage() {
     let reader = new FileReader();
 
     reader.onload = function(event) {
-        encryptedData[passkey] = { type: 'image', data: event.target.result };
-        document.getElementById('imagePasskey').innerHTML = `<span class="green-text">Passkey: ${passkey}</span>`;
+        const encoded = event.target.result; // Base64 encoded image
+
+        encryptedData[passkey] = { type: 'image', data: encoded };
+
+        document.getElementById('imagePasskey').innerHTML = `
+            <span class="green-text">Passkey: ${passkey}</span><br>
+            <textarea readonly rows="4" style="width:90%; margin-top:10px;">${encoded}</textarea>
+        `;
         showPopupMessage("✅ Image Encrypted!");
     };
 
@@ -69,9 +75,14 @@ function encryptText() {
     }
 
     let passkey = generatePasskey();
+    const encoded = btoa(text); // Base64 encoding
+
     encryptedData[passkey] = { type: 'text', data: text };
 
-    document.getElementById('textPasskey').innerHTML = `<span class="green-text">Passkey: ${passkey}</span>`;
+    document.getElementById('textPasskey').innerHTML = `
+        <span class="green-text">Passkey: ${passkey}</span><br>
+        <textarea readonly rows="4" style="width:90%; margin-top:10px;">${encoded}</textarea>
+    `;
     showPopupMessage("✅ Text Encrypted!");
 }
 
